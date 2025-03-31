@@ -1,21 +1,26 @@
 import selenium.webdriver as webdriver
 from selenium.webdriver.chrome.service import Service
-import time
 from bs4 import BeautifulSoup
 
 def scrape_site(webURL):
-    print("Launching browser..")
+    print("Launching webpage in background..")
 
     chrome_driver_path = "./chromedriver.exe"
     options = webdriver.ChromeOptions()
     options.binary_location = "C:\\Users\\domie\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
+
+    options.add_argument("--headless")  
+    options.add_argument("--disable-gpu")  # Helps with some rendering issues
+    options.add_argument("--no-sandbox")  # Avoids some permission issues
+    options.add_argument("--disable-dev-shm-usage")  # Helps with resource management
+
     driver = webdriver.Chrome(service=Service(chrome_driver_path), options=options)
 
     try:
         driver.get(webURL)
         print("Page loaded..")
         html = driver.page_source
-        time.sleep(10)
+        #time.sleep()
         return html
     finally:
         driver.quit()

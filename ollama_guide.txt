@@ -1,0 +1,6 @@
+github link: 
+https://github.com/ollama/ollama
+
+2 legfontosabb command:
+ollama pull deepseek-r1     --> llm letöltése
+ollama run deepseek-r1      --> chat az llm-el
