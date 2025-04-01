@@ -2,7 +2,7 @@ from langchain_ollama import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
 import psutil
 
-template = (
+templateENG = (
     "You are tasked with extracting specific information from the following text content: {dom_content}. "
     "Please follow these instructions carefully: \n\n"
     "1. **Extract Information:** Only extract the information that directly matches the provided description: {parse_description}. "
@@ -11,10 +11,19 @@ template = (
     "4. **Direct Data Only:** Your output should contain only the data that is explicitly requested, with no other text."
 )
 
+templateHUN = (
+    "Az a feladatod, hogy konkrét információkat nyerj ki a következő szöveges tartalomból: {dom_content}. "
+    "Kövesd ezeket az utasításokat: \n\n"
+    "1. **Információ kinyerés:** Csak azokat az információkat vedd ki, amelyek közvetlenül megegyeznek a megadott leírással: {parse_description}. "
+    "2. **Nincs extra tartalom:** Válaszodban ne adj meg további szöveget, megjegyzést vagy magyarázatot. "
+    "3. **Ha nincs válasz:** Ha egyetlen információ sem felel meg a leírásnak, adj vissza egy üres karakterláncot ('')."
+    "4. **Céltudatos válasz:** A kimenetnek csak azokat az adatokat kell tartalmaznia, amelyeket kifejezetten kérek, más szöveg nélkül."
+)
+
 model = OllamaLLM(model="gemma3:1b")  # milyen llm válaszoljon
 
 def parse_with_ollama(dom_chunks, parse_description):
-    prompt = ChatPromptTemplate.from_template(template)
+    prompt = ChatPromptTemplate.from_template(templateENG)
     chain = prompt | model
 
     parsed_results = []

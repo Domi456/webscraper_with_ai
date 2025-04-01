@@ -12,12 +12,32 @@ from parse import parse_with_ollama, stop_ollama
 # signal.signal(signal.SIGALRM, timeout_handler)
 # signal.alarm(180) # 3 perc után cancel
 
+st.markdown(
+    """
+    <style>
+        #webscraper-robot {
+            font-family: 'Courier', sans-serif;
+            color: #1f1f1f;
+        }
+        p, textarea, #text_input_1{
+            font-family: 'Courier', sans-serif;
+            color: #1f1f1f;
+            font-size: 17px
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-st.title("Web scraper with AI")
+
+st.title("Webscraper robot")
 url = st.text_input("Enter a website URL: ")
 
+if 'running' not in st.session_state:
+    st.session_state.running = True
+
 if 'scraping' not in st.session_state:
-    st.session_state.scraping = True
+    st.session_state.scraping = False
 
 def start_scraping():
     st.session_state.scraping = True

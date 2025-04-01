@@ -45,5 +45,7 @@ def clean_body_content(body):
 
 def split_dom_content(dom_content, max_length = 6000):
     return [
+        # list comprehension
+        # minden i a dom_content egy szelete, egy szelet maximum max_length karaktert tartalmaz
         dom_content[i : i + max_length] for i in range(0, len(dom_content), max_length)
     ]
