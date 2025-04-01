@@ -1,7 +1,6 @@
 from langchain_ollama import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
-import signal
-import sys
+import psutil
 
 template = (
     "You are tasked with extracting specific information from the following text content: {dom_content}. "
@@ -12,7 +11,7 @@ template = (
     "4. **Direct Data Only:** Your output should contain only the data that is explicitly requested, with no other text."
 )
 
-model = OllamaLLM(model="deepseek-r1")
+model = OllamaLLM(model="gemma3:1b")  # milyen llm válaszoljon
 
 def parse_with_ollama(dom_chunks, parse_description):
     prompt = ChatPromptTemplate.from_template(template)
@@ -27,8 +26,8 @@ def parse_with_ollama(dom_chunks, parse_description):
 
     return "\n".join(parsed_results)
 
-def stop_ollama(signum, frame):
-    print("Stopping Ollama...")
-    sys.exit(0)
-
-#signal.signal(signal.SIGINT, stop_ollama)
+def stop_ollama(process_name):
+    for proc in psutil.process_iter(attrs=['pid', 'name']):
+        if proc.info['name'] == process_name:
+            print(f"Leállítom: {proc.info['name']} (PID: {proc.info['pid']})")
+            psutil.Process(proc.info['pid']).terminate()
