@@ -58,10 +58,13 @@ if st.session_state.scraping:
     body_content = extract_body_content(result)
     clean_content = clean_body_content(body_content)
 
+    if 'dom_content' not in st.session_state:
+    st.session_state.dom_content = ""
+
     st.session_state.dom_content = clean_content
 
     with st.expander("View DOM content"):
-        st.text_area("DOM Content", clean_content, height=400)
+        st.text_area("DOM Content", st.session_state.dom_content, height=400)
 
     print(result)
     st.session_state.scraping = False
@@ -70,6 +73,7 @@ if st.session_state.scraping:
     progress_bar.empty()
     status_message.empty()
 
+#print("DOM content: ", st.session_state.dom_content)
 parse_description = st.text_area("Describe what you want to parse: ")
 
 if 'running' not in st.session_state:
@@ -80,6 +84,7 @@ if 'processing' not in st.session_state:
 def start_processing():
     st.session_state.running = False
     st.session_state.processing = True
+    #print("DOM content start processing: ", st.session_state.dom_content)
 
 def cancel_processing():
     st.session_state.running = True

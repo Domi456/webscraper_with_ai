@@ -35,7 +35,10 @@ def extract_body_content(html_content):
 def clean_body_content(body):
     soup = BeautifulSoup(body, "html.parser")
 
-    for scriptORstyle in soup(["script", "style", "iframe"]):
+    for element in soup.find_all(class_=lambda class_name: class_name and 'hidden' in class_name):
+        element.extract()
+
+    for scriptORstyle in soup(["script", "style", "iframe", "meta", "noscript"]):
         scriptORstyle.extract()
 
     cleaned_content = soup.get_text(separator="\n")
