@@ -6,12 +6,6 @@ import time
 from scrape import scrape_site, split_dom_content, clean_body_content, extract_body_content
 from parse import parse_with_ollama, stop_ollama
 
-# def timeout_handler(singum, frame):
-#     raise TimeoutError("Ollama repsonse took too long. Cancelling...")
-
-# signal.signal(signal.SIGALRM, timeout_handler)
-# signal.alarm(180) # 3 perc után cancel
-
 st.markdown(
     """
     <style>
@@ -28,7 +22,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
 
 st.title("Webscraper robot")
 url = st.text_input("Enter a website URL: ")
@@ -59,12 +52,19 @@ if st.session_state.scraping:
     clean_content = clean_body_content(body_content)
 
     if 'dom_content' not in st.session_state:
-    st.session_state.dom_content = ""
+        st.session_state.dom_content = ""
 
-    st.session_state.dom_content = clean_content
 
-    with st.expander("View DOM content"):
-        st.text_area("DOM Content", st.session_state.dom_content, height=400)
+    st.text_area(
+        "DOM Content",
+        value=st.session_state.dom_content,
+        key="dom_content_textarea",
+        height=400,
+        position="fixed",
+    )
+
+    if 'dom_content_textarea' in st.session_state:
+        st.session_state.dom_content = st.session_state.dom_content_textarea
 
     print(result)
     st.session_state.scraping = False
